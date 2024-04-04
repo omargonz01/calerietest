@@ -39,6 +39,19 @@ class User:
         self.points += 50
         print(f"{self.name} joined the group challenge '{challenge_name}' with {len(group_members)} other members and earned 50 points!")
 
+    def win_group_challenge(self, challenge_name):
+        # Add points for winning a group challenge
+        self.points += 100
+        print(f"{self.name} won the group challenge '{challenge_name}' and earned 100 points!")
+
+    def redeem_rewards(self, reward):
+        # Deduct points for redeeming a reward
+        if self.points >= 100:
+            self.points -= 100
+            print(f"{self.name} redeemed the reward '{reward}' for 100 points!")
+        else:
+            print(f"{self.name} does not have enough points to redeem the reward '{reward}'.")
+
 
 
     
