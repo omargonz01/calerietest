@@ -1,3 +1,5 @@
+
+
 @app.route('/food-snap', methods=['GET'])
 def food_snap():
    
@@ -24,3 +26,32 @@ def food_snap():
             return jsonify({"error": "Failed to retrieve the image"}), 400
     else:
         return jsonify({"error": "img_url parameter is required"}), 400
+
+@app.route ('/calories', methods=['GET'])
+def calc_calories():
+    food = request.args.get('food')
+    if food:
+        response = requests.get('https://api.edamam.com/api/food-database/parser?ingr='+food+'&app_id=1b3c5f0b&app_key=5f2b1a7c2a7e7f5e9e0e4c6f5f5b7d2e')
+        if response.status_code == 200:
+            data = response.json()
+            calories = data['parsed'][0]['food']['nutrients']['ENERC_KCAL']
+            return jsonify({"calories": calories})
+        else:
+            return jsonify({"error": "Failed to retrieve the food"}), 400
+    else:
+        return jsonify({"error": "food parameter is required"}), 400
+
+
+@app.route('/food-recipe', methods=['GET'])
+def food_recipe():
+    food = request.args.get('food')
+    if food:
+        response = requests.get('https://api.edamam.com/search?q='+food+'&app_id=1b3c5f0b&app_key=5f2b1a7c2a7e7f5e9e0e4c6f5f5b7d2e')
+        if response.status_code == 200:
+            data = response.json()
+            recipe = data['hits'][0]['recipe']['ingredientLines']
+            return jsonify({"recipe": recipe})
+        else:
+            return jsonify({"error": "Failed to retrieve the food"}), 400
+    else:
+        return jsonify({"error": "food parameter is required"}), 400
